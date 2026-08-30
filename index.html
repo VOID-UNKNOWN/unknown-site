@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNKNOWN - Digital Creator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600&family=Space+Grotesk:wght@400;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #00ff88;
+            --card-bg: #1f1f1f;
+            --border: #2a2a2a;
+            --font-primary: 'JetBrains Mono', monospace;
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #0066cc;
+            --card-bg: #ffffff;
+            --border: #e0e0e0;
+        }
+
+        [data-theme="cyber"] {
+            --bg-primary: #001122;
+            --bg-secondary: #002233;
+            --text-primary: #00ffff;
+            --text-secondary: #00aaff;
+            --accent: #ff00ff;
+            --card-bg: #002244;
+            --border: #003366;
+        }
+
+        [data-theme="sunset"] {
+            --bg-primary: #1a0a1a;
+            --bg-secondary: #2a1a2a;
+            --text-primary: #ffb3ba;
+            --text-secondary: #ff8c94;
+            --accent: #bae1ff;
+            --card-bg: #2a0a2a;
+            --border: #3a1a3a;
+        }
+
+        [data-theme="forest"] {
+            --bg-primary: #0a1a0a;
+            --bg-secondary: #1a2a1a;
+            --text-primary: #baffc9;
+            --text-secondary: #8fbc8f;
+            --accent: #ffd700;
+            --card-bg: #1a3a1a;
+            --border: #2a4a2a;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            background: var(--bg-secondary);
+            padding: 10px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .theme-btn[data-theme="dark"] {
+            background: #0a0a0a;
+        }
+
+        .theme-btn[data-theme="light"] {
+            background: #ffffff;
+        }
+
+        .theme-btn[data-theme="cyber"] {
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+        }
+
+        .theme-btn[data-theme="sunset"] {
+            background: linear-gradient(135deg, #ffb3ba, #ff8c94);
+        }
+
+        .theme-btn[data-theme="forest"] {
+            background: linear-gradient(135deg, #baffc9, #ffd700);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 80px;
+        }
+
+        .hero-welcome {
+            font-family: var(--font-primary);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 30px;
+            letter-spacing: -2px;
+        }
+
+        .hero-quote {
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            max-width: 500px;
+        }
+
+        .scroll-indicator {
+            font-family: var(--font-primary);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 60px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        section {
+            margin-bottom: 100px;
+        }
+
+        .section-number {
+            font-family: var(--font-primary);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 40px;
+        }
+
+        h2 em {
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .hobby-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .hobby-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .hobby-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .hobby-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .project-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .project-item {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 20px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .project-link:hover .project-item {
+            transform: translateX(10px);
+            border-color: var(--accent);
+        }
+
+        .project-number {
+            font-family: var(--font-primary);
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: 700;
+            min-width: 80px;
+        }
+
+        .project-content {
+            flex: 1;
+        }
+
+        .project-title {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .project-desc {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-family: var(--font-primary);
+            font-size: 0.8rem;
+            padding: 5px 12px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            color: var(--text-secondary);
+        }
+
+        .tag.completed {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        @media (max-width: 768px) {
+            .project-item {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <div class="theme-switcher">
+        <button class="theme-btn" data-theme="dark" title="Dark"></button>
+        <button class="theme-btn" data-theme="light" title="Light"></button>
+        <button class="theme-btn" data-theme="cyber" title="Cyber"></button>
+        <button class="theme-btn" data-theme="sunset" title="Sunset"></button>
+        <button class="theme-btn" data-theme="forest" title="Forest"></button>
+    </div>
+
+    <div class="container">
+        <section class="hero">
+            <div class="hero-welcome">// welcome to the void</div>
+            <h1>UNKNOWN</h1>
+            <div class="hero-quote">
+                "In the digital realm, anonymity is the greatest signature."
+            </div>
+            <div class="scroll-indicator">↓ scroll</div>
+        </section>
+
+        <section>
+            <div class="section-number">01 — what I do</div>
+            <h2>Things I <em>actually</em> work on</h2>
+            <div class="hobbies-grid">
+                <div class="hobby-card">
+                    <div class="hobby-icon">⚡</div>
+                    <div class="hobby-title">Code</div>
+                    <div class="hobby-desc">
+                        Building tools, automations, and experiments. From quick scripts to full-stack projects.
+                    </div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-icon">🎮</div>
+                    <div class="hobby-title">Games</div>
+                    <div class="hobby-desc">
+                        Playing indie gems and analyzing game design. Sometimes making small games too.
+                    </div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-icon">🌐</div>
+                    <div class="hobby-title">Web</div>
+                    <div class="hobby-desc">
+                        Crafting websites, UI experiments, and interactive experiences that push boundaries.
+                    </div>
+                </div>
+                <div class="hobby-card">
+                    <div class="hobby-icon">🔧</div>
+                    <div class="hobby-title">Tools</div>
+                    <div class="hobby-desc">
+                        Making things that solve problems—or just exist because they're fun to build.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-number">02 — projects</div>
+            <h2>What I've been <em>building</em></h2>
+            <div class="projects-list">
+
+                <!-- ============================================ -->
+                <!-- 👇 YOUR BOOK PROJECT LINK IS HERE 👇         -->
+                <!-- ============================================ -->
+                <a href="book.html" class="project-link">
+                    <div class="project-item">
+                        <div class="project-number">001</div>
+                        <div class="project-content">
+                            <div class="project-title">📖 My Book</div>
+                            <div class="project-desc">
+                                My private writing space. Password protected.
+                            </div>
+                            <div class="project-tags">
+                                <span class="tag">Writing</span>
+                                <span class="tag completed">Private 🔒</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <!-- ============================================ -->
+                <!-- 👆 COPY THE BLOCK ABOVE TO ADD MORE PROJECTS -->
+                <!-- ============================================ -->
+
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const body = document.body;
+
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const theme = btn.dataset.theme;
+                body.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            });
+        });
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', savedTheme);
+    </script>
+</body>
+</html>
+
+
